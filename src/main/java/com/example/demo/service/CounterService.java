@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.annotation.Log;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,13 +25,13 @@ public class CounterService {
         log.info(String.valueOf(result));
     }
 
-    @Around("@annotation(com.example.demo.annotation.Log)")
-    public Object around(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("before");
+    @Around("@annotation(logAnnotation)")
+    public Object around(ProceedingJoinPoint pjp, Log logAnnotation) throws Throwable {
+        log.info(logAnnotation.value() + ":before");
         try {
             return pjp.proceed();
         } finally {
-            log.info("after");
+            log.info(logAnnotation.value() + ":after");
         }
     }
 
